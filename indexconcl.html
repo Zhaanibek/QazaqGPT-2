@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPT-2 QA System</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1e1e1e;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #chatContainer {
+            background-color: #2a2a2a;
+            color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            width: 80%;
+            max-width: 400px;
+            margin: auto;
+        }
+
+        #chatHeader {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 30px;
+            text-align: center;
+            font-size: 18px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        #chatBody {
+            padding: 10px;
+            height: 550px;
+            overflow-y: auto;
+        }
+
+        #questionForm {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ccc;
+        }
+
+        #question {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            color: #000;
+            background-color: #fff;
+        }
+
+        #askButton {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #answer {
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="chatContainer">
+    <div id="chatHeader">Сізге қалай көмектесе аламын</div>
+    <div id="chatBody">
+        <form id="questionForm">
+            <input type="text" id="question" name="question" required placeholder="Сұрақ қойыңыз...">
+            <button type="button" id="askButton" onclick="askQuestion()">Ask</button>
+        </form>
+        <div id="answer"></div>
+    </div>
+</div>
+
+<script>
+    async function askQuestion() {
+        const question = document.getElementById('question').value;
+        const response = await fetch('http://127.0.0.1:5000/ask', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ question: question })
+        });
+        const data = await response.json();
+        document.getElementById('answer').innerText = `Answer: ${data.response}`;
+    }
+</script>
+
+</body>
+</html>
